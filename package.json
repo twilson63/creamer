@@ -1,0 +1,25 @@
+{
+  "author": "Tom Wilson <tom@jackhq.com> (http://twilson63.com)",
+  "name": "creamer",
+  "description": "A flatiron plugin for dynamic coffeecup templates",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/twilson63/creamer.git"
+  },
+  "main": "lib",
+  "scripts": {
+    "test": "mocha"
+  },
+  "engines": {
+    "node": "0.6 || 0.7 || 0.8"
+  },
+  "dependencies": {
+    "coffeecup": "0.3.5-3"
+  },
+  "devDependencies": {
+    "broadway": "*",
+    "should": "*",
+    "mocha": "*"
+  }
+}
