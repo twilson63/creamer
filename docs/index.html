@@ -37,6 +37,7 @@ layout       | CoffeeCup Template with content method
 -------------|-----------|-------------|-------------------------
 res          | object    | yes         | Http Response Object
 page         | function  | yes         | coffeecup template
+data         | object    | no          | any data you want to pass to your template
 </code></pre>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="vi">@render = </span><span class="nf">(res, page, data={}) -&gt;</span>
       <span class="nv">html = </span><span class="s1">&#39;&#39;</span>
       <span class="k">if</span> <span class="nx">options</span><span class="p">.</span><span class="nx">layout</span><span class="o">?</span>
