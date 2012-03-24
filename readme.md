@@ -33,6 +33,7 @@ Parameter  |  Type    | Required    |  Description
 -----------|----------|-------------|-------------
 res        | object   | yes         | http response object
 template   | function | yes         | coffeecup template
+data       | object   | no          | any data you want to pass to your template
 
 example
 
