@@ -38,6 +38,7 @@ exports.attach = (options={}) ->
     #     -------------|-----------|-------------|-------------------------
     #     res          | object    | yes         | Http Response Object
     #     page         | function  | yes         | coffeecup template
+    #     data         | object    | no          | any data you want to pass to your template
     @render = (res, page, data={}) ->
       html = ''
       if options.layout?
