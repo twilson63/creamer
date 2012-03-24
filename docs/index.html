@@ -1,0 +1,50 @@
+<!DOCTYPE html>  <html> <head>   <title>index.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               index.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h1>Creamer</h1>
+
+<p>A flatiron http plugin that adds coffeecup templates to your flatiron application</p>
+
+<p>install</p>
+
+<pre><code>npm install creamer
+</code></pre>
+
+<p>usage</p>
+
+<pre><code>flatiron = require 'flatiron'
+creamer = require 'creamer'
+app = flatiron.app
+layout = require __dirname + '/views/layout'
+app.use creamer, layout: layout
+
+app.get '/', -&gt;
+  app.render @res, -&gt; h1 'Hello World'
+
+app.start 3000
+</code></pre>
+
+<hr />
+
+<p>require coffeecup
+<a href="http://github.com/gradus/coffeecup">http://github.com/gradus/coffeecup</a></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">cc = </span><span class="nx">require</span> <span class="s1">&#39;coffeecup&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>broadway plug attach method</p>
+
+<p>Plugin Options</p>
+
+<pre><code>Options      |    Description
+-------------|----------------------------------------
+layout       | CoffeeCup Template with content method
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">exports.attach = </span><span class="nf">(options={}) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>app.render(res, page, data)</h2>
+
+<pre><code>Parameter    |   Type    |  Required?  |  Description
+-------------|-----------|-------------|-------------------------
+res          | object    | yes         | Http Response Object
+page         | function  | yes         | coffeecup template
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="vi">@render = </span><span class="nf">(res, page, data={}) -&gt;</span>
+      <span class="nv">html = </span><span class="s1">&#39;&#39;</span>
+      <span class="k">if</span> <span class="nx">options</span><span class="p">.</span><span class="nx">layout</span><span class="o">?</span>
+        <span class="nv">options.content = </span><span class="nx">page</span>
+        <span class="nv">html = </span><span class="nx">cc</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">layout</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nv">locals: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">hardcode: </span><span class="nx">options</span><span class="p">)</span>
+      <span class="k">else</span>
+        <span class="nv">html = </span><span class="nx">cc</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">page</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nv">locals: </span><span class="kc">true</span><span class="p">,</span> <span class="nv">hardcode: </span><span class="nx">options</span><span class="p">)</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;content-type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/html&#39;</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">end</span> <span class="nx">html</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>init plugin method</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">init: </span><span class="nf">(done) -&gt;</span> <span class="nx">done</span><span class="p">()</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

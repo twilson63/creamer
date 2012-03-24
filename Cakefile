@@ -76,7 +76,7 @@ build = (watch, callback) ->
     callback = watch
     watch = false
 
-  options = ['-c', '-b', '-o', 'lib', 'src']
+  options = ['-c', '-b', '-o', '.', 'index.coffee']
   options.unshift '-w' if watch
   launch 'coffee', options, callback
 
@@ -97,8 +97,10 @@ mocha = (options, callback) ->
 # **given** optional function as callback
 # **then** invoke launch passing docco command
 docco = (callback) ->
-  walk 'src', (err, files) -> launch 'docco', files, callback
-
+  try launch('docco', ['index.coffee'], callback)
+  catch err 
+    log 'docco not found!', red 
+    log 'try npm install docco -g', green
 # Cakefile Tasks
 #
 # ## *docs*
