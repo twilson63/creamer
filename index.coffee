@@ -23,6 +23,7 @@
 # require coffeecup
 # [http://github.com/gradus/coffeecup](http://github.com/gradus/coffeecup)
 cc = require 'coffeecup'
+helpers = require 'coffeecup-helpers'
 # broadway plug attach method
 # 
 # Plugin Options
@@ -32,21 +33,34 @@ cc = require 'coffeecup'
 #     layout       | CoffeeCup Template with content method
 # 
 exports.attach = (options={}) ->
-    # ## app.render(res, page, data)
-    #
-    #     Parameter    |   Type    |  Required?  |  Description
-    #     -------------|-----------|-------------|-------------------------
-    #     res          | object    | yes         | Http Response Object
-    #     page         | function  | yes         | coffeecup template
-    #     data         | object    | no          | any data you want to pass to your template
-    @render = (res, page, data={}) ->
-      html = ''
-      if options.layout?
-        options.content = page
-        html = cc.render(options.layout, data, locals: true, hardcode: options)
-      else
-        html = cc.render(page, data, locals: true, hardcode: options)
-      res.writeHead 200, 'content-type': 'text/html'
-      res.end html
+  hardcode = helpers
+  # ## app.bind(page, data)
+  #
+  #     Parameter    |   Type    |  Required?  |  Description
+  #     -------------|-----------|-------------|-------------------------
+  #     page         | function  | yes         | coffeecup template
+  #     data         | object    | no          | any data you want to pass to your template
+  @bind = (page, data) ->
+    if options.layout?
+      helpers.content = page
+      cc.render(options.layout, data, locals: true, hardcode: helpers)
+    else
+      cc.render(page, data, locals: true, hardcode: helpers)
+    
+  # TODO
+  # ## app.helpers(obj)
+  #@helpers = (obj) ->
+    
+  # ## app.render(res, page, data)
+  #
+  #     Parameter    |   Type    |  Required?  |  Description
+  #     -------------|-----------|-------------|-------------------------
+  #     res          | object    | yes         | Http Response Object
+  #     page         | function  | yes         | coffeecup template
+  #     data         | object    | no          | any data you want to pass to your template
+  @render = (res, page, data={}) ->
+    html = @bind page, data
+    res.writeHead 200, 'content-type': 'text/html'
+    res.end html
   # init plugin method
-  init: (done) -> done()
+exports.init = (done) -> done()
