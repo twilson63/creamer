@@ -13,10 +13,10 @@
 #     app = flatiron.app
 #     layout = require __dirname + '/views/layout'
 #     app.use creamer, layout: layout
-#     
-#     app.get '/', ->
-#       app.render @res, -> h1 'Hello World'
-#     
+#
+#     app.router.get '/', ->
+#       @res.html app.bind -> h1 'Hello World'
+#
 #     app.start 3000
 #
 # ---
@@ -25,15 +25,15 @@
 cc = require 'coffeecup'
 helpers = require 'coffeecup-helpers'
 # broadway plug attach method
-# 
+#
 # Plugin Options
 #
 #     Options      |    Description
 #     -------------|----------------------------------------
 #     layout       | CoffeeCup Template with content method
-# 
+#
 exports.attach = (options={}) ->
-  hardcode = helpers
+  self = this
   # ## app.bind(page, data)
   #
   #     Parameter    |   Type    |  Required?  |  Description
@@ -46,11 +46,13 @@ exports.attach = (options={}) ->
       cc.render(options.layout, data, locals: true, hardcode: helpers)
     else
       cc.render(page, data, locals: true, hardcode: helpers)
-    
+
+  @router.attach ( -> @bind = self.bind ) if @router?.attach?
+
   # TODO
   # ## app.helpers(obj)
   #@helpers = (obj) ->
-    
+
   # ## app.render(res, page, data)
   #
   #     Parameter    |   Type    |  Required?  |  Description
