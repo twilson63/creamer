@@ -1,41 +1,59 @@
-var cc, helpers;
+var cc, hardcode,
+  __hasProp = Object.prototype.hasOwnProperty;
 
 cc = require('coffeecup');
 
-helpers = require('coffeecup-helpers');
+hardcode = require('coffeecup-helpers');
 
 exports.attach = function(options) {
-  var self, _ref;
+  var merge, self, views, _ref;
   if (options == null) options = {};
   self = this;
+  merge = function(x, y) {
+    var k, v;
+    for (k in y) {
+      if (!__hasProp.call(y, k)) continue;
+      v = y[k];
+      x[k] = v;
+    }
+    return x;
+  };
+  views = options.views || {};
   this.bind = function(page, data) {
     if (options.layout != null) {
-      helpers.content = page;
+      hardcode.content = page;
       return cc.render(options.layout, data, {
-        locals: true,
-        hardcode: helpers
+        hardcode: hardcode,
+        locals: true
       });
     } else {
       return cc.render(page, data, {
-        locals: true,
-        hardcode: helpers
+        hardcode: hardcode,
+        locals: true
       });
     }
   };
+  this.registerHelper = function(name, fn) {
+    var valid;
+    valid = cc.compile(fn, {
+      hardcode: hardcode,
+      locals: true
+    });
+    if (typeof fn === 'function') return hardcode[name] = fn;
+  };
+  this.registerView = function(name, fn) {
+    var valid;
+    valid = cc.compile(fn, {
+      hardcode: hardcode,
+      locals: true
+    });
+    return views[name] = fn;
+  };
   if (((_ref = this.router) != null ? _ref.attach : void 0) != null) {
-    this.router.attach((function() {
+    return this.router.attach((function() {
       return this.bind = self.bind;
     }));
   }
-  return this.render = function(res, page, data) {
-    var html;
-    if (data == null) data = {};
-    html = this.bind(page, data);
-    res.writeHead(200, {
-      'content-type': 'text/html'
-    });
-    return res.end(html);
-  };
 };
 
 exports.init = function(done) {
