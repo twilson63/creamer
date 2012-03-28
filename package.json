@@ -21,6 +21,7 @@
   "devDependencies": {
     "broadway": "*",
     "should": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "coffee-script": "*"
   }
 }
