@@ -2,7 +2,7 @@
   "author": "Tom Wilson <tom@jackhq.com> (http://twilson63.com)",
   "name": "creamer",
   "description": "A flatiron plugin for dynamic coffeecup templates",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/twilson63/creamer.git"
@@ -17,7 +17,7 @@
   "dependencies": {
     "coffeecup": "0.3.5-3",
     "coffeecup-helpers": "0.1.1",
-    "wrench": "*"
+    "wrench": "1.3.7"
   },
   "devDependencies": {
     "broadway": "*",
