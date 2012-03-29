@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "coffeecup": "0.3.5-3",
-    "coffeecup-helpers": "0.1.1"
+    "coffeecup-helpers": "0.1.1",
+    "wrench": "*"
   },
   "devDependencies": {
     "broadway": "*",

@@ -9,15 +9,35 @@ render = (t, layout) ->
 
 describe 'creamer', ->
   htmlf = (html) -> html.replace /(\n\s+|\n+)/g, ''
+  describe '#attach()', ->
+    it 'should load views', ->
+      output = htmlf """
+<h1>view2</h1>
+      """
+      app = new broadway.App()
+      app.use creamer, viewDir: __dirname + '/views'
+      app.init()
+      app.bind('view2').should.equal output
+
+  describe '#registerViews', ->
+    it 'should register view and render view by name', ->
+      output = htmlf """
+<h1>view1</h1>
+      """
+      app = new broadway.App()
+      app.use creamer #, layout: layout
+      app.init()
+      app.registerView 'view1', require('./views/view1')
+      app.bind('view1').should.equal output
+
   describe '#bind(page, data)', ->
     it 'should attach to broadway app', ->
       t = ->
         h1 'Hello World'
       output = htmlf """
-  <h1>Hello World</h1>
+<h1>Hello World</h1>
       """
       render(t).should.equal output
-
     it 'should handle layout template', ->
       layout = ->
         html ->
@@ -25,9 +45,9 @@ describe 'creamer', ->
       t = ->
         h1 'Hello World'
       output = htmlf """
-  <html>
-    <h1>Hello World</h1>
-  </html>
+<html>
+  <h1>Hello World</h1>
+</html>
       """
       render(t, layout).should.equal output
   describe '#registerHelper(name, fn)', ->

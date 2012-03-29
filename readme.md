@@ -17,29 +17,57 @@ flatiron = require 'flatiron'
 creamer = require 'creamer'
 app = flatiron.app
 layout = require __dirname + '/views/layout'
-app.use creamer, layout: layout
+app.use creamer, layout: layout, viewDir: __dirname + '/views'
 
-app.get '/', ->
-  app.render @res, -> h1 'Hello World'
+app.get '/', -> @res.html @bind('index')
 
 app.start 3000
 ```
 
 ## api
 
-## app.render(res, template, data)
+options
+
+- layout -> layout function
+- viewDir -> directory of views
+
+## app.bind(template, data)
 
 Parameter  |  Type    | Required    |  Description
 -----------|----------|-------------|-------------
-res        | object   | yes         | http response object
 template   | function | yes         | coffeecup template
 data       | object   | no          | any data you want to pass to your template
 
 example
 
 ``` coffeescript
-app.router.get '/', -> app.render @res, -> h1 'foo'
+app.router.get '/', -> @res.html @bind('index')
 ```
+
+## app.registerHelper(name, fn)
+
+register any helper to your coffeecup 
+
+Parameter    |   Type    |  Required?  |  Description
+-------------|-----------|-------------|------------------------
+name         | string    | yes         | name of helper
+fn           | functio   | yes         | coffeecup function
+
+example
+
+```
+app.registerHelper 'foo', (baz) -> baz + 'bar'
+```
+
+## app.registerView(name, fn)
+
+register view 
+
+Parameter    |   Type    |  Required?  |  Description
+-------------|-----------|-------------|------------------------
+name         | string    | yes         | name of helper
+fn           | functio   | yes         | coffeecup function
+
 
 # roadmap
 

@@ -15,7 +15,7 @@
 #     app.use creamer, layout: layout
 #
 #     app.router.get '/', ->
-#       @res.html app.bind -> h1 'Hello World'
+#       @res.html @bind -> h1 'Hello World'
 #
 #     app.start 3000
 #
@@ -24,6 +24,9 @@
 # [http://github.com/gradus/coffeecup](http://github.com/gradus/coffeecup)
 cc = require 'coffeecup'
 hardcode = require 'coffeecup-helpers'
+fs = require 'fs'
+#walk = require __dirname + '/lib/walk'
+wrench = require 'wrench'
 # broadway plug attach method
 #
 # Plugin Options
@@ -31,15 +34,23 @@ hardcode = require 'coffeecup-helpers'
 #     Options      |    Description
 #     -------------|----------------------------------------
 #     layout       | CoffeeCup Template with content method
-#     views        | Pre Register your views
+#     viewDir     | Add your views directory and we will pre-register your views
 #
 exports.attach = (options={}) ->
   self = this
-  merge = (x, y) ->
-    x[k] = v for own k, v of y
-    return x
-  views = options.views || {}
-
+  # ## load views by view directory
+  # 
+  # by passing the viewDir as an option
+  # creamer will load your views
+  registeredViews = {}
+  viewDir = options.viewDir || null
+  if options.viewDir?
+    views = wrench.readdirSyncRecursive(options.viewDir) 
+    for view in views
+      if view.match /.coffee/
+        fn = require viewDir + '/' + view
+        name = view.split('/').pop().split('.').shift()
+        registeredViews[name] = fn
   # ## app.bind(page, data)
   #
   #     Parameter    |   Type    |  Required?  |  Description
@@ -47,6 +58,7 @@ exports.attach = (options={}) ->
   #     page         | function  | yes         | coffeecup template
   #     data         | object    | no          | any data you want to pass to your template
   @bind = (page, data) ->
+    page = registeredViews[page] if typeof page is 'string'
     if options.layout?
       hardcode.content = page
       cc.render(options.layout, data, { hardcode, locals: true })
@@ -55,15 +67,23 @@ exports.attach = (options={}) ->
 
   # ## app.regisgerHelper(name, fn)
   #
+  #     Parameter    |   Type    |  Required?  |  Description
+  #     -------------|-----------|-------------|-------------------------
+  #     name         | string    | yes         | name of helper
+  #     fn           | functio   | yes         | coffeecup function
   @registerHelper = (name, fn) ->
     valid = cc.compile(fn, {hardcode, locals: true})
     hardcode[name] = fn if typeof fn is 'function'
 
   # ## app.registerView(name, fn)
   #
+  #     Parameter    |   Type    |  Required?  |  Description
+  #     -------------|-----------|-------------|-------------------------
+  #     name         | string    | yes         | name of helper
+  #     fn           | functio   | yes         | coffeecup function
   @registerView = (name, fn) ->
     valid = cc.compile(fn, {hardcode, locals: true})
-    views[name] = fn
+    registeredViews[name] = fn
 
   # if flatiron router exists, then attach creamers bind function
   @router.attach ( -> @bind = self.bind ) if @router?.attach?

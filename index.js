@@ -1,25 +1,32 @@
-var cc, hardcode,
-  __hasProp = Object.prototype.hasOwnProperty;
+var cc, fs, hardcode, wrench;
 
 cc = require('coffeecup');
 
 hardcode = require('coffeecup-helpers');
 
+fs = require('fs');
+
+wrench = require('wrench');
+
 exports.attach = function(options) {
-  var merge, self, views, _ref;
+  var fn, name, registeredViews, self, view, viewDir, views, _i, _len, _ref;
   if (options == null) options = {};
   self = this;
-  merge = function(x, y) {
-    var k, v;
-    for (k in y) {
-      if (!__hasProp.call(y, k)) continue;
-      v = y[k];
-      x[k] = v;
+  registeredViews = {};
+  viewDir = options.viewDir || null;
+  if (options.viewDir != null) {
+    views = wrench.readdirSyncRecursive(options.viewDir);
+    for (_i = 0, _len = views.length; _i < _len; _i++) {
+      view = views[_i];
+      if (view.match(/.coffee/)) {
+        fn = require(viewDir + '/' + view);
+        name = view.split('/').pop().split('.').shift();
+        registeredViews[name] = fn;
+      }
     }
-    return x;
-  };
-  views = options.views || {};
+  }
   this.bind = function(page, data) {
+    if (typeof page === 'string') page = registeredViews[page];
     if (options.layout != null) {
       hardcode.content = page;
       return cc.render(options.layout, data, {
@@ -47,7 +54,7 @@ exports.attach = function(options) {
       hardcode: hardcode,
       locals: true
     });
-    return views[name] = fn;
+    return registeredViews[name] = fn;
   };
   if (((_ref = this.router) != null ? _ref.attach : void 0) != null) {
     return this.router.attach((function() {
