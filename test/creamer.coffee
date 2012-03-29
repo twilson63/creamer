@@ -17,7 +17,7 @@ describe 'creamer', ->
       app = new broadway.App()
       app.use creamer, viewDir: __dirname + '/views'
       app.init()
-      app.bind('view2').should.equal output
+      app.bind('folder/view2').should.equal output
 
   describe '#registerViews', ->
     it 'should register view and render view by name', ->

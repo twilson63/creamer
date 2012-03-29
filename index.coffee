@@ -25,7 +25,6 @@
 cc = require 'coffeecup'
 hardcode = require 'coffeecup-helpers'
 fs = require 'fs'
-#walk = require __dirname + '/lib/walk'
 wrench = require 'wrench'
 # broadway plug attach method
 #
@@ -43,13 +42,12 @@ exports.attach = (options={}) ->
   # by passing the viewDir as an option
   # creamer will load your views
   registeredViews = {}
-  viewDir = options.viewDir || null
   if options.viewDir?
     views = wrench.readdirSyncRecursive(options.viewDir) 
     for view in views
-      if view.match /.coffee/
-        fn = require viewDir + '/' + view
-        name = view.split('/').pop().split('.').shift()
+      if view.match /(.js|.coffee)/
+        fn = require options.viewDir + '/' + view
+        name = view.split('.').shift()
         registeredViews[name] = fn
   # ## app.bind(page, data)
   #
@@ -59,11 +57,13 @@ exports.attach = (options={}) ->
   #     data         | object    | no          | any data you want to pass to your template
   @bind = (page, data) ->
     page = registeredViews[page] if typeof page is 'string'
-    if options.layout?
+    if options.layout? and typeof page is 'function'
       hardcode.content = page
       cc.render(options.layout, data, { hardcode, locals: true })
-    else
+    else if typeof page is 'function'
       cc.render(page, data, { hardcode, locals: true})
+    else
+      '<p>Not Found</p>'
 
   # ## app.regisgerHelper(name, fn)
   #

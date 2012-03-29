@@ -9,35 +9,36 @@ fs = require('fs');
 wrench = require('wrench');
 
 exports.attach = function(options) {
-  var fn, name, registeredViews, self, view, viewDir, views, _i, _len, _ref;
+  var fn, name, registeredViews, self, view, views, _i, _len, _ref;
   if (options == null) options = {};
   self = this;
   registeredViews = {};
-  viewDir = options.viewDir || null;
   if (options.viewDir != null) {
     views = wrench.readdirSyncRecursive(options.viewDir);
     for (_i = 0, _len = views.length; _i < _len; _i++) {
       view = views[_i];
-      if (view.match(/.coffee/)) {
-        fn = require(viewDir + '/' + view);
-        name = view.split('/').pop().split('.').shift();
+      if (view.match(/(.js|.coffee)/)) {
+        fn = require(options.viewDir + '/' + view);
+        name = view.split('.').shift();
         registeredViews[name] = fn;
       }
     }
   }
   this.bind = function(page, data) {
     if (typeof page === 'string') page = registeredViews[page];
-    if (options.layout != null) {
+    if ((options.layout != null) && typeof page === 'function') {
       hardcode.content = page;
       return cc.render(options.layout, data, {
         hardcode: hardcode,
         locals: true
       });
-    } else {
+    } else if (typeof page === 'function') {
       return cc.render(page, data, {
         hardcode: hardcode,
         locals: true
       });
+    } else {
+      return '<p>Not Found</p>';
     }
   };
   this.registerHelper = function(name, fn) {
