@@ -9,18 +9,28 @@ fs = require('fs');
 wrench = require('wrench');
 
 exports.attach = function(options) {
-  var fn, name, registeredViews, self, view, views, _i, _len, _ref;
+  var controller, fn, items, name, registeredViews, self, view, _i, _j, _len, _len2, _ref;
   if (options == null) options = {};
   self = this;
   registeredViews = {};
-  if (options.viewDir != null) {
-    views = wrench.readdirSyncRecursive(options.viewDir);
-    for (_i = 0, _len = views.length; _i < _len; _i++) {
-      view = views[_i];
+  if (options.views != null) {
+    items = wrench.readdirSyncRecursive(options.views);
+    for (_i = 0, _len = items.length; _i < _len; _i++) {
+      view = items[_i];
       if (view.match(/(.js|.coffee)/)) {
-        fn = require(options.viewDir + '/' + view);
+        fn = require(options.views + '/' + view);
         name = view.split('.').shift();
         registeredViews[name] = fn;
+      }
+    }
+  }
+  if (options.controllers != null) {
+    items = wrench.readdirSyncRecursive(options.controllers);
+    for (_j = 0, _len2 = items.length; _j < _len2; _j++) {
+      controller = items[_j];
+      if (controller.match(/(.js|.coffee)/)) {
+        fn = require(options.controllers + '/' + controller);
+        this.router.mount(fn);
       }
     }
   }

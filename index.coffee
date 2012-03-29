@@ -42,13 +42,22 @@ exports.attach = (options={}) ->
   # by passing the viewDir as an option
   # creamer will load your views
   registeredViews = {}
-  if options.viewDir?
-    views = wrench.readdirSyncRecursive(options.viewDir) 
-    for view in views
+  if options.views?
+    items = wrench.readdirSyncRecursive(options.views) 
+    for view in items
       if view.match /(.js|.coffee)/
-        fn = require options.viewDir + '/' + view
+        fn = require options.views + '/' + view
         name = view.split('.').shift()
         registeredViews[name] = fn
+  
+  if options.controllers?
+    items = wrench.readdirSyncRecursive(options.controllers) 
+    for controller in items
+      if controller.match /(.js|.coffee)/
+        fn = require options.controllers + '/' + controller
+        # mount controllers
+        @router.mount fn
+
   # ## app.bind(page, data)
   #
   #     Parameter    |   Type    |  Required?  |  Description

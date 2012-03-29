@@ -15,7 +15,7 @@ describe 'creamer', ->
 <h1>view2</h1>
       """
       app = new broadway.App()
-      app.use creamer, viewDir: __dirname + '/views'
+      app.use creamer, views: __dirname + '/views'
       app.init()
       app.bind('folder/view2').should.equal output
 
