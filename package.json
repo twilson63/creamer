@@ -1,6 +1,7 @@
 {
   "author": "Tom Wilson <tom@jackhq.com> (http://twilson63.com)",
   "name": "creamer",
+  "keywords": ["coffee-script","coffeekup","coffeecup","flatiron"],
   "description": "A flatiron plugin for dynamic coffeecup templates",
   "version": "0.2.4",
   "repository": {

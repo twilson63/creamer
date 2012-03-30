@@ -10,6 +10,31 @@ render = (t, layout) ->
 describe 'creamer', ->
   htmlf = (html) -> html.replace /(\n\s+|\n+)/g, ''
   describe '#attach()', ->
+    it 'should allow for content_for style yields', ->
+      layout = ->
+        html ->
+          body ->
+            content()
+            @header() if @header?
+            @body()
+            @footer() if @footer?
+      t = ->
+        @header = -> h1 'Header'
+        @body = -> p 'Hello World'
+        @footer = -> footer 'Footer'
+      output = htmlf """
+<html>
+  <body>
+    <h1>Header</h1>
+    <p>Hello World</p>
+    <footer>Footer</footer>
+  </body>
+</html>
+      """
+      app = new broadway.App()
+      app.use creamer, layout: if layout? then layout else null
+      app.init()
+      app.bind(t).should.equal output
     it 'should load views', ->
       output = htmlf """
 <h1>view2</h1>
