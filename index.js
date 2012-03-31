@@ -35,20 +35,27 @@ exports.attach = function(options) {
     }
   }
   this.bind = function(page, data) {
+    var html;
+    html = "";
     if (typeof page === 'string') page = registeredViews[page];
     if ((options.layout != null) && typeof page === 'function') {
       hardcode.content = page;
-      return cc.render(options.layout, data, {
+      html = cc.render(options.layout, data, {
         hardcode: hardcode,
         locals: true
       });
     } else if (typeof page === 'function') {
-      return cc.render(page, data, {
+      html = cc.render(page, data, {
         hardcode: hardcode,
         locals: true
       });
     } else {
-      return '<p>Not Found</p>';
+      '<p>Not Found</p>';
+    }
+    if (this.res != null) {
+      return this.res.html(html);
+    } else {
+      return html;
     }
   };
   this.registerHelper = function(name, fn) {

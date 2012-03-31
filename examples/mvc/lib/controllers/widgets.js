@@ -7,10 +7,10 @@ module.exports = {
     get: function() {
       var _this = this;
       return Widget.all(function(err, widgets) {
-        return _this.res.html(_this.bind('widgets/index', {
+        return _this.bind('widgets/index', {
           widgets: '.active',
           widgets: widgets
-        }));
+        });
       });
     }
   }

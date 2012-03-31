@@ -18,7 +18,7 @@ app = flatiron.app
 layout = require __dirname + '/views/layout'
 app.use creamer, layout: layout, viewDir: __dirname + '/views'
 
-app.get '/', -> @res.html @bind('index')
+app.get '/', -> @bind('index')
 
 app.start 3000
 ```
@@ -27,8 +27,11 @@ app.start 3000
 
 options
 
-- layout -> layout function
-- viewDir -> directory of views
+option     |    Description
+-----------|----------|-------------|-------------
+layout     | coffeecup layout
+views      | directory to your views
+controllers| directory to your controllers
 
 ## app.bind(template, data)
 
@@ -40,7 +43,7 @@ data       | object   | no          | any data you want to pass to your template
 example
 
 ``` coffeescript
-app.router.get '/', -> @res.html @bind('index')
+app.router.get '/', -> @bind('index')
 ```
 
 ## app.registerHelper(name, fn)
@@ -50,7 +53,7 @@ register any helper to your coffeecup
 Parameter    |   Type    |  Required?  |  Description
 -------------|-----------|-------------|------------------------
 name         | string    | yes         | name of helper
-fn           | functio   | yes         | coffeecup function
+fn           | function   | yes         | coffeecup function
 
 example
 
@@ -65,7 +68,7 @@ register view
 Parameter    |   Type    |  Required?  |  Description
 -------------|-----------|-------------|------------------------
 name         | string    | yes         | name of helper
-fn           | functio   | yes         | coffeecup function
+fn           | function   | yes         | coffeecup function
 
 
 # roadmap

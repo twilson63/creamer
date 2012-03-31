@@ -2,7 +2,7 @@ var app, creamer, ecstatic, flatiron;
 
 flatiron = require('flatiron');
 
-creamer = require('creamer');
+creamer = require('../../../');
 
 ecstatic = require('ecstatic');
 
@@ -24,15 +24,15 @@ app.http.before = [
 ];
 
 app.router.get('/', function() {
-  return this.res.html(this.bind('index', {
+  return this.bind('index', {
     home: '.active'
-  }));
+  });
 });
 
 app.router.get('/about', function() {
-  return this.res.html(this.bind('about', {
+  return this.bind('about', {
     about: '.active'
-  }));
+  });
 });
 
 app.start(3000, function() {

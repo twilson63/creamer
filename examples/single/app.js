@@ -2,7 +2,7 @@ var app, creamer, flatiron;
 
 flatiron = require('flatiron');
 
-creamer = require('creamer');
+creamer = require('../../');
 
 app = flatiron.app;
 
@@ -23,8 +23,8 @@ app.use(creamer, {
 });
 
 app.router.get('/', function() {
-  return this.res.html(this.bind(function() {
-    return h1('Hello Coffeecup');
+  return this.res.html(app.bind(function() {
+    return h1('Hello Creamer');
   }));
 });
 

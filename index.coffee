@@ -70,15 +70,20 @@ exports.attach = (options={}) ->
   #     page         | function  | yes         | coffeecup template
   #     data         | object    | no          | any data you want to pass to your template
   @bind = (page, data) ->
+    html = ""
     page = registeredViews[page] if typeof page is 'string'
     if options.layout? and typeof page is 'function'
       hardcode.content = page
-      cc.render(options.layout, data, { hardcode, locals: true })
+      html = cc.render(options.layout, data, { hardcode, locals: true })
     else if typeof page is 'function'
-      cc.render(page, data, { hardcode, locals: true})
+      html = cc.render(page, data, { hardcode, locals: true})
     else
       '<p>Not Found</p>'
-
+    # if this has a res object this send straight to res.html
+    if @res?
+      @res.html(html)
+    else
+      html
   # ## app.registerHelper(name, fn)
   #
   #     Parameter    |   Type    |  Required?  |  Description

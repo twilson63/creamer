@@ -1,5 +1,5 @@
 flatiron = require 'flatiron'
-creamer = require 'creamer'
+creamer = require '../../../'
 ecstatic = require 'ecstatic'
 
 app = flatiron.app
@@ -13,12 +13,11 @@ app.http.before = [
   ecstatic __dirname + '/../public', autoIndex: off, cache: on
 ]
 
-app.router.get '/', -> 
-  @res.html @bind('index', { home: '.active' })
+app.router.get '/', -> @bind('index', { home: '.active' })
 
 app.router.get '/:page', (page) ->
   options ?= {}
   options[page] = '.active'
-  @res.html @bind(page, options)
+  @bind(page, options)
 
 app.start 3000, -> console.log 'running...'

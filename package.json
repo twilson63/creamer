@@ -3,7 +3,7 @@
   "name": "creamer",
   "keywords": ["coffee-script","coffeekup","coffeecup","flatiron"],
   "description": "A flatiron plugin for dynamic coffeecup templates",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/twilson63/creamer.git"
