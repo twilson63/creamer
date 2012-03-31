@@ -79,7 +79,7 @@ exports.attach = (options={}) ->
     else
       '<p>Not Found</p>'
 
-  # ## app.regisgerHelper(name, fn)
+  # ## app.registerHelper(name, fn)
   #
   #     Parameter    |   Type    |  Required?  |  Description
   #     -------------|-----------|-------------|-------------------------
