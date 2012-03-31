@@ -33,7 +33,8 @@ wrench = require 'wrench'
 #     Options      |    Description
 #     -------------|----------------------------------------
 #     layout       | CoffeeCup Template with content method
-#     viewDir     | Add your views directory and we will pre-register your views
+#     views        | Add your views directory and creamer will pre-register your views
+#     controllers  | Add your controllers directory and creamer will mount your controllers
 #
 exports.attach = (options={}) ->
   self = this
@@ -49,7 +50,11 @@ exports.attach = (options={}) ->
         fn = require options.views + '/' + view
         name = view.split('.').shift()
         registeredViews[name] = fn
-  
+
+  # ## load controllers by controller directory
+  # 
+  # by passing the controllers as an option
+  # creamer will load your controllers
   if options.controllers?
     items = wrench.readdirSyncRecursive(options.controllers) 
     for controller in items

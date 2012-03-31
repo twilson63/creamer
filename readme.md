@@ -3,8 +3,7 @@
 [![build status](https://secure.travis-ci.org/twilson63/creamer.png)](http://travis-ci.org/twilson63/creamer)
 
 
-Creamer is a flatiron/broadway plugin that provides layout functionality for
-coffeecup when using with flatiron.
+Creamer is a server side flatiron plugin that provides coffeecup views and easy controller mounting.
 
 ## install
 
