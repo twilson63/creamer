@@ -16,7 +16,8 @@ describe 'creamer', ->
           body ->
             content()
             @header() if @header?
-            @body()
+            div ->
+              @body()
             @footer() if @footer?
       t = ->
         @header = -> h1 'Header'
@@ -26,7 +27,9 @@ describe 'creamer', ->
 <html>
   <body>
     <h1>Header</h1>
-    <p>Hello World</p>
+    <div>
+      <p>Hello World</p>
+    </div>
     <footer>Footer</footer>
   </body>
 </html>
