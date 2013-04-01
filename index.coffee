@@ -72,6 +72,8 @@ exports.attach = (options={}) ->
   @bind = (page, data) ->
     html = ""
     page = registeredViews[page] if typeof page is 'string'
+    data ?= {}
+    if @req?.session? then data.session = @req.session
     if options.layout? and typeof page is 'function'
       hardcode.content = page
       html = cc.render(options.layout, data, { hardcode, locals: true })
