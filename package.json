@@ -1,9 +1,14 @@
 {
   "author": "Tom Wilson <tom@jackhq.com> (http://twilson63.com)",
   "name": "creamer",
-  "keywords": ["coffee-script","coffeekup","coffeecup","flatiron"],
+  "keywords": [
+    "coffee-script",
+    "coffeekup",
+    "coffeecup",
+    "flatiron"
+  ],
   "description": "A flatiron plugin for dynamic coffeecup templates",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/twilson63/creamer.git"
@@ -12,7 +17,7 @@
     "test": "mocha"
   },
   "engines": {
-    "node": "0.6 || 0.7 || 0.8"
+    "node": "0.6 || 0.7 || 0.8 || 0.10"
   },
   "dependencies": {
     "coffeecup": "0.3.9",
@@ -23,6 +28,7 @@
     "broadway": "*",
     "should": "*",
     "mocha": "*",
-    "coffee-script": "*"
+    "coffee-script": "*",
+    "expect.js": "~0.2.0"
   }
 }

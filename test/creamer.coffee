@@ -1,5 +1,6 @@
 creamer = require '..'
 broadway = require 'broadway'
+expect = require 'expect.js'
 
 render = (t, layout) ->
   app = new broadway.App()
@@ -37,7 +38,7 @@ describe 'creamer', ->
       app = new broadway.App()
       app.use creamer, layout: if layout? then layout else null
       app.init()
-      app.bind(t).should.equal output
+      expect(app.bind(t)).to.be output    
     it 'should load views', ->
       output = htmlf """
 <h1>view2</h1>
@@ -45,7 +46,7 @@ describe 'creamer', ->
       app = new broadway.App()
       app.use creamer, views: __dirname + '/views'
       app.init()
-      app.bind('folder/view2').should.equal output
+      expect(app.bind('folder/view2')).to.be output
 
   describe '#registerViews', ->
     it 'should register view and render view by name', ->
@@ -56,7 +57,7 @@ describe 'creamer', ->
       app.use creamer #, layout: layout
       app.init()
       app.registerView 'view1', require('./views/view1')
-      app.bind('view1').should.equal output
+      expect(app.bind('view1')).to.be output
 
   describe '#bind(page, data)', ->
     it 'should attach to broadway app', ->
@@ -65,7 +66,7 @@ describe 'creamer', ->
       output = htmlf """
 <h1>Hello World</h1>
       """
-      render(t).should.equal output
+      expect(render(t)).to.be output
     it 'should handle layout template', ->
       layout = ->
         html ->
@@ -77,7 +78,7 @@ describe 'creamer', ->
   <h1>Hello World</h1>
 </html>
       """
-      render(t, layout).should.equal output
+      expect(render(t, layout)).to.eql output
   describe '#registerHelper(name, fn)', ->
     it 'should register my custom helper', ->
       layout = -> html -> body -> content()
@@ -96,4 +97,4 @@ describe 'creamer', ->
       app.use creamer, layout: layout
       app.init()
       app.registerHelper 'bigfoo', helper
-      app.bind(t).should.equal output
+      expect(app.bind(t)).to.be output
