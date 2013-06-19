@@ -46,7 +46,7 @@ exports.attach = (options={}) ->
   if options.views?
     items = wrench.readdirSyncRecursive(options.views) 
     for view in items
-      if view.match /(.js|.coffee)/
+      if view.match /(.+)\.(js|coffee|coffee\.md)$/
         fn = require options.views + '/' + view
         name = view.split('.').shift()
         registeredViews[name] = fn
@@ -58,7 +58,7 @@ exports.attach = (options={}) ->
   if options.controllers?
     items = wrench.readdirSyncRecursive(options.controllers) 
     for controller in items
-      if controller.match /(.js|.coffee)/
+      if controller.match /(.+)\.(js|coffee|coffee\.md)$/
         fn = require options.controllers + '/' + controller
         # mount controllers
         @router.mount fn
