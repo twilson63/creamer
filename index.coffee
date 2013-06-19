@@ -63,6 +63,20 @@ exports.attach = (options={}) ->
         # mount controllers
         @router.mount fn
 
+  # ## load helpers by helpers directory
+  # 
+  # by passing the helpers as an option
+  # creamer will load your helpers
+  if options.helpers?
+    items = wrench.readdirSyncRecursive(options.helpers) 
+    for helper in items
+      match = helper.match /(.*)\.(js|coffee|coffee\.md)/
+      if match
+        fn = require options.helpers + '/' + helper
+        name = match[1].replace /[\. \/]+/g, '_'
+        valid = cc.compile(fn, {hardcode, locals: true})
+        hardcode[name] = fn if typeof fn is 'function'
+
   # ## app.bind(page, data)
   #
   #     Parameter    |   Type    |  Required?  |  Description

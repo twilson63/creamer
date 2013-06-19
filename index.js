@@ -10,7 +10,7 @@ fs = require('fs');
 wrench = require('wrench');
 
 exports.attach = function(options) {
-  var controller, fn, items, name, registeredViews, self, view, _i, _j, _len, _len1, _ref;
+  var controller, fn, helper, items, match, name, registeredViews, self, valid, view, _i, _j, _k, _len, _len1, _len2, _ref;
   if (options == null) {
     options = {};
   }
@@ -34,6 +34,24 @@ exports.attach = function(options) {
       if (controller.match(/(.+)\.(js|coffee|coffee\.md)$/)) {
         fn = require(options.controllers + '/' + controller);
         this.router.mount(fn);
+      }
+    }
+  }
+  if (options.helpers != null) {
+    items = wrench.readdirSyncRecursive(options.helpers);
+    for (_k = 0, _len2 = items.length; _k < _len2; _k++) {
+      helper = items[_k];
+      match = helper.match(/(.*)\.(js|coffee|coffee\.md)/);
+      if (match) {
+        fn = require(options.helpers + '/' + helper);
+        name = match[1].replace(/[\. \/]+/g, '_');
+        valid = cc.compile(fn, {
+          hardcode: hardcode,
+          locals: true
+        });
+        if (typeof fn === 'function') {
+          hardcode[name] = fn;
+        }
       }
     }
   }
@@ -70,7 +88,6 @@ exports.attach = function(options) {
     }
   };
   this.registerHelper = function(name, fn) {
-    var valid;
     valid = cc.compile(fn, {
       hardcode: hardcode,
       locals: true
@@ -80,7 +97,6 @@ exports.attach = function(options) {
     }
   };
   this.registerView = function(name, fn) {
-    var valid;
     valid = cc.compile(fn, {
       hardcode: hardcode,
       locals: true
